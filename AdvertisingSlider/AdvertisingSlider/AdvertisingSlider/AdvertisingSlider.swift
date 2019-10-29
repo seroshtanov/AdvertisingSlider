@@ -25,22 +25,23 @@ public protocol AdvertisingSliderDataSource {
         }
     }
 
-    @IBInspectable var overViewColor : UIColor! = UIColor.clear
-    @IBInspectable var overViewAlpha : CGFloat = 1
-    @IBInspectable var activePageColor: UIColor = UIColor.init(red: 83/255.0, green: 164/255.0, blue: 248/255.0, alpha: 1)
-    @IBInspectable var pageColor : UIColor = UIColor.init(red: 223/255.0, green: 223/255.0, blue: 223/255.0, alpha: 1)
-    @IBInspectable var imageViewColor : UIColor = UIColor.init(red: 83/255.0, green: 164/255.0, blue: 248/255.0, alpha: 1)
-    @IBInspectable var pagerHeight : CGFloat = 35
-    @IBInspectable var cornerRadius : CGFloat = 8
-    @IBInspectable var scrollingManually : Bool = false
-    @IBInspectable var pageControlInteraction : Bool = false
-    @IBInspectable var textColor : UIColor = UIColor.white
-    @IBInspectable var font : UIFont = UIFont.systemFont(ofSize: 14)
-    @IBInspectable var textRows : Int = 3
-    @IBInspectable var buttonWidth : CGFloat = 35
-    @IBInspectable var defaultText : String?
-    @IBInspectable var leftButtonImage : UIImage? =  UIImage.init(named: "advSliderLeft")
-    @IBInspectable var rightButtonImage : UIImage? = UIImage.init(named: "advSliderRight")
+    @IBInspectable public var overViewColor : UIColor! = UIColor.clear
+    @IBInspectable public var overViewAlpha : CGFloat = 1
+    @IBInspectable public var activePageColor: UIColor = UIColor.init(red: 83/255.0, green: 164/255.0, blue: 248/255.0, alpha: 1)
+    @IBInspectable public var pageColor : UIColor = UIColor.init(red: 223/255.0, green: 223/255.0, blue: 223/255.0, alpha: 1)
+    @IBInspectable public var imageViewColor : UIColor = UIColor.init(red: 83/255.0, green: 164/255.0, blue: 248/255.0, alpha: 1)
+    @IBInspectable public var pagerHeight : CGFloat = 35
+    @IBInspectable public var cornerRadius : CGFloat = 8
+    @IBInspectable public var scrollingManually : Bool = false
+    @IBInspectable public var pageControlInteraction : Bool = false
+    @IBInspectable public var textColor : UIColor = UIColor.white
+    @IBInspectable public var font : UIFont = UIFont.systemFont(ofSize: 14)
+    @IBInspectable public var textRows : Int = 3
+    @IBInspectable public var buttonWidth : CGFloat = 35
+    @IBInspectable public var defaultText : String?
+    
+    @IBInspectable public var leftButtonImage : UIImage? =  UIImage.init(named: "advSliderLeft")
+    @IBInspectable public var rightButtonImage : UIImage? = UIImage.init(named: "advSliderRight")
     
     fileprivate var topView : UIView!
     fileprivate var scrollView : UIScrollView!
@@ -62,24 +63,24 @@ public protocol AdvertisingSliderDataSource {
         self.updateLabel()
     }
     
-    func reloadData()  {
+    public func reloadData()  {
         self.fillScrollView()
     }
     
-    func nextPage() -> Bool {
+    public func nextPage() -> Bool {
         if self.activePageNumber >= (self.pagesCount() - 1) {return false}
         self.pageControl?.currentPage += 1
         self.scrollToCurrentPage()
         return true
     }
-    func previousPage() -> Bool {
+    public func previousPage() -> Bool {
         if self.activePageNumber == 0 {return false}
         self.pageControl?.currentPage -= 1
         self.scrollToCurrentPage()
         return true
     }
     
-    func moveToPage(_ index: Int, animated: Bool) {
+    public func moveToPage(_ index: Int, animated: Bool) {
         guard (index >= 0 && index <= (self.pagesCount() - 1)) || index == 0 else {
             fatalError("Index out of bounds")
         }
