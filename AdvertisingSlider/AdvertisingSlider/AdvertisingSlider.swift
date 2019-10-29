@@ -39,6 +39,7 @@ public protocol AdvertisingSliderDataSource {
     @IBInspectable public var textRows : Int = 3
     @IBInspectable public var buttonWidth : CGFloat = 35
     @IBInspectable public var defaultText : String?
+    
     @IBInspectable public var leftButtonImage : UIImage? =  UIImage.init(named: "advSliderLeft")
     @IBInspectable public var rightButtonImage : UIImage? = UIImage.init(named: "advSliderRight")
     
@@ -62,24 +63,24 @@ public protocol AdvertisingSliderDataSource {
         self.updateLabel()
     }
     
-    open func reloadData()  {
+    public func reloadData()  {
         self.fillScrollView()
     }
     
-    open func nextPage() -> Bool {
+    public func nextPage() -> Bool {
         if self.activePageNumber >= (self.pagesCount() - 1) {return false}
         self.pageControl?.currentPage += 1
         self.scrollToCurrentPage()
         return true
     }
-    open func previousPage() -> Bool {
+    public func previousPage() -> Bool {
         if self.activePageNumber == 0 {return false}
         self.pageControl?.currentPage -= 1
         self.scrollToCurrentPage()
         return true
     }
     
-    open func moveToPage(_ index: Int, animated: Bool) {
+    public func moveToPage(_ index: Int, animated: Bool) {
         guard (index >= 0 && index <= (self.pagesCount() - 1)) || index == 0 else {
             fatalError("Index out of bounds")
         }

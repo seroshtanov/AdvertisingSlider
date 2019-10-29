@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "AdvertisingSlider"
-  s.version      = "0.9.2"
+  s.version      = "0.9.3"
   s.summary      = "It's simple way to show some images with text in yours iOS appication"
   s.description  = <<-DESC 
 						Control to show some pictures with text. Simple to use. Just add UIView in your xib or storyboard and change class name on "AdvertisingSlider". More information in GitHub account.
@@ -32,8 +32,7 @@ Pod::Spec.new do |s|
   
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
-  s.resources = "AdvertisingSlider/AdvertisingSlider/AdvertisingSlider/*.{xcassets}"
-	
-
-
+  s.resource_bundles = {
+     'AdvertisingSlider' => ['AdvertisingSlider/AdvertisingSlider/AdvertisingSlider/*.xcassets']
+    }
 end

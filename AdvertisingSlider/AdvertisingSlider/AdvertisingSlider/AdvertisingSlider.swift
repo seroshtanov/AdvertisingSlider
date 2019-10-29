@@ -17,7 +17,7 @@ public protocol AdvertisingSliderDataSource {
 
 @IBDesignable public class AdvertisingSlider: UIView {
 
-    var dataSource : AdvertisingSliderDataSource?
+    public var dataSource : AdvertisingSliderDataSource?
     fileprivate var activePageNumber = 0 {
         didSet {
             self.updateButtonsState()
