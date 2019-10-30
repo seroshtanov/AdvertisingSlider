@@ -43,9 +43,6 @@ public protocol AdvertisingSliderDataSource {
     @IBInspectable public var leftButtonImage : UIImage?
     @IBInspectable public var rightButtonImage : UIImage?
     
-    fileprivate let defaultLeftImage : UIImage
-    fileprivate let defaultRightImage : UIImage
-    
     fileprivate var topView : UIView!
     fileprivate var scrollView : UIScrollView!
     fileprivate var pageControl : UIPageControl!
@@ -55,25 +52,14 @@ public protocol AdvertisingSliderDataSource {
     
     
 
-    required init?(coder: NSCoder) {
-        let bundle = Bundle.init(for: AdvertisingSlider.self)
-        self.defaultLeftImage = UIImage.init(named: "advSliderLeft", in: bundle, compatibleWith: nil)!
-        self.defaultRightImage = UIImage.init(named: "advSliderRight", in: bundle, compatibleWith: nil)!
-        super.init(coder: coder)
-    }
     
-    public override init(frame: CGRect) {
-        let bundle = Bundle.init(for: AdvertisingSlider.self)
-        self.defaultLeftImage = UIImage.init(named: "advSliderLeft", in: bundle, compatibleWith: nil)!
-        self.defaultRightImage = UIImage.init(named: "advSliderRight", in: bundle, compatibleWith: nil)!
-        super.init(frame: frame)
-    }
-    
-    
+
     override public func draw(_ rect: CGRect) {
         if rect.size.width < 100 || rect.size.height < 100 {
             return
         }
+        print("GOGOGO")
+        
         self.drawPageControlIfNeeeded(rect: rect)
         self.drawScrollViewIfNeeded(rect: rect)
         self.drawTopViewIfNeeded(rect: rect)
@@ -110,6 +96,13 @@ public protocol AdvertisingSliderDataSource {
             self.activePageNumber = index
         }
     }
+    
+    fileprivate func getImage(name: String) -> UIImage? {
+        let bundle = Bundle.init(for: AdvertisingSlider.self)
+        let result = UIImage.init(named: name, in: bundle, compatibleWith: nil)
+        return result
+    }
+    
 }
 
 // MARK : PageControl
@@ -245,10 +238,18 @@ extension AdvertisingSlider {
         self.topView.backgroundColor = self.overViewColor
         self.topView.alpha = self.overViewAlpha
         self.topView.layer.cornerRadius = self.cornerRadius
-        let leftIm = self.leftButtonImage != nil ? self.leftButtonImage! : self.defaultLeftImage
-        let rightIm = self.rightButtonImage != nil ? self.rightButtonImage! : self.defaultRightImage
-        self.leftButton.setImage(leftIm, for: .normal)
-        self.rightButton.setImage(rightIm, for: .normal)
+        
+        if self.leftButtonImage == nil {
+            self.leftButton.setImage(self.getImage(name: "advSliderLeft"), for: .normal)
+        } else {
+            self.leftButton.setImage(self.leftButtonImage, for: .normal)
+        }
+        
+        if self.rightButtonImage == nil {
+            self.rightButton.setImage(self.getImage(name: "advSliderRight"), for: .normal)
+        } else {
+            self.rightButton.setImage(self.rightButtonImage, for: .normal)
+        }
     }
     
     fileprivate func updateButtonsState() {
