@@ -6,7 +6,7 @@ It's simple way to show some images with text in yours iOS appication
 
 ## Swift 5.0;  >=iOS10.3 
 
-### Installaton:
+### Installation:
 
 **pod 'AdvertisingSlider', '0.9.6'**
 
