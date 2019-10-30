@@ -11,6 +11,9 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var slider: AdvertisingSlider!
+    
+    // Text source: https://en.wikipedia.org/wiki/Travel
+    
     fileprivate let titles = ["The origin of the word \"travel\" is most likely lost to history.",
     "The term \"travel\" may originate from the Old French word travail, which means 'work'",
     "According to the Merriam Webster dictionary, the first known use of the word travel was in the 14th century.",
@@ -18,10 +21,8 @@ class ViewController: UIViewController {
     "In English we still occasionally use the words \"travail\", which means struggle.",
     "There's a big difference between simply being a tourist and being a true world traveler"]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.slider.dataSource = self
         self.slider.overViewColor = UIColor.black
         self.slider.overViewAlpha = 0.2
@@ -30,11 +31,8 @@ class ViewController: UIViewController {
         self.slider.font = UIFont.boldSystemFont(ofSize: 16)
         self.slider.textRows = 5
         self.slider.contentMode = .scaleAspectFill
-        
         self.slider.moveToPage(3, animated: false)
     }
-
-
 }
 
 extension ViewController : AdvertisingSliderDataSource {
@@ -49,6 +47,4 @@ extension ViewController : AdvertisingSliderDataSource {
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String {
         return self.titles[index]
     }
-    
-    
 }

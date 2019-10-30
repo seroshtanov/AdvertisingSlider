@@ -35,13 +35,16 @@ public protocol AdvertisingSliderDataSource {
     @IBInspectable public var scrollingManually : Bool = false
     @IBInspectable public var pageControlInteraction : Bool = false
     @IBInspectable public var textColor : UIColor = UIColor.white
-    @IBInspectable public var font : UIFont = UIFont.systemFont(ofSize: 14)
+    @IBInspectable public var font : UIFont = UIFont.boldSystemFont(ofSize: 14)
     @IBInspectable public var textRows : Int = 3
     @IBInspectable public var buttonWidth : CGFloat = 35
     @IBInspectable public var defaultText : String?
     
-    @IBInspectable public var leftButtonImage : UIImage? =  UIImage.init(named: "advSliderLeft")
-    @IBInspectable public var rightButtonImage : UIImage? = UIImage.init(named: "advSliderRight")
+    @IBInspectable public var leftButtonImage : UIImage?
+    @IBInspectable public var rightButtonImage : UIImage?
+    
+    fileprivate let defaultLeftImage : UIImage
+    fileprivate let defaultRightImage : UIImage
     
     fileprivate var topView : UIView!
     fileprivate var scrollView : UIScrollView!
@@ -50,9 +53,24 @@ public protocol AdvertisingSliderDataSource {
     fileprivate var rightButton : UIButton!
     fileprivate var textLabel : UILabel?
     
+    
 
+    required init?(coder: NSCoder) {
+        let bundle = Bundle.init(for: AdvertisingSlider.self)
+        self.defaultLeftImage = UIImage.init(named: "advSliderLeft", in: bundle, compatibleWith: nil)!
+        self.defaultRightImage = UIImage.init(named: "advSliderRight", in: bundle, compatibleWith: nil)!
+        super.init(coder: coder)
+    }
+    
+    public override init(frame: CGRect) {
+        let bundle = Bundle.init(for: AdvertisingSlider.self)
+        self.defaultLeftImage = UIImage.init(named: "advSliderLeft", in: bundle, compatibleWith: nil)!
+        self.defaultRightImage = UIImage.init(named: "advSliderRight", in: bundle, compatibleWith: nil)!
+        super.init(frame: frame)
+    }
+    
+    
     override public func draw(_ rect: CGRect) {
-        super.draw(rect)
         if rect.size.width < 100 || rect.size.height < 100 {
             return
         }
@@ -92,7 +110,6 @@ public protocol AdvertisingSliderDataSource {
             self.activePageNumber = index
         }
     }
-    
 }
 
 // MARK : PageControl
@@ -228,8 +245,10 @@ extension AdvertisingSlider {
         self.topView.backgroundColor = self.overViewColor
         self.topView.alpha = self.overViewAlpha
         self.topView.layer.cornerRadius = self.cornerRadius
-        self.leftButton.setImage(self.leftButtonImage, for: .normal)
-        self.rightButton.setImage(self.rightButtonImage, for: .normal)
+        let leftIm = self.leftButtonImage != nil ? self.leftButtonImage! : self.defaultLeftImage
+        let rightIm = self.rightButtonImage != nil ? self.rightButtonImage! : self.defaultRightImage
+        self.leftButton.setImage(leftIm, for: .normal)
+        self.rightButton.setImage(rightIm, for: .normal)
     }
     
     fileprivate func updateButtonsState() {
