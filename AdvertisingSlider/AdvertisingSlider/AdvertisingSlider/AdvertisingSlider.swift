@@ -25,6 +25,7 @@ public protocol AdvertisingSliderDataSource {
         }
     }
 
+    
     @IBInspectable public var overViewColor : UIColor! = UIColor.clear
     @IBInspectable public var overViewAlpha : CGFloat = 1
     @IBInspectable public var activePageColor: UIColor = UIColor.init(red: 83/255.0, green: 164/255.0, blue: 248/255.0, alpha: 1)
@@ -39,6 +40,8 @@ public protocol AdvertisingSliderDataSource {
     @IBInspectable public var textRows : Int = 3
     @IBInspectable public var buttonWidth : CGFloat = 35
     @IBInspectable public var defaultText : String?
+    
+    @IBInspectable public var pageControlOverImages : Bool = false
     
     @IBInspectable public var leftButtonImage : UIImage?
     @IBInspectable public var rightButtonImage : UIImage?
@@ -58,11 +61,12 @@ public protocol AdvertisingSliderDataSource {
         if rect.size.width < 100 || rect.size.height < 100 {
             return
         }
-        print("GOGOGO")
         
-        self.drawPageControlIfNeeeded(rect: rect)
+        
         self.drawScrollViewIfNeeded(rect: rect)
         self.drawTopViewIfNeeded(rect: rect)
+        self.drawPageControlIfNeeeded(rect: rect)
+        
         self.updateButtonsState()
         self.updateLabel()
     }
@@ -175,7 +179,7 @@ extension AdvertisingSlider {
     
     fileprivate func calculateTopViewFrame(rect: CGRect) -> CGRect {
         let width = rect.size.width
-        let height = rect.size.height - pagerHeight
+        let height = self.pageControlOverImages ? rect.size.height : rect.size.height - pagerHeight
         let originX = CGFloat(0)
         let originY = CGFloat(0)
         return CGRect.init(x: originX, y: originY, width: width, height: height)
