@@ -8,7 +8,7 @@ It's simple way to show some images with text in yours iOS appication
 
 ### Installation:
 
-**pod 'AdvertisingSlider', '0.9.6'**
+**pod 'AdvertisingSlider', '0.9.7'**
 
 ## How to use:
 
@@ -41,6 +41,7 @@ When "scrollingManually == false" AdvertisingSlider has UIView over images. You 
 <p>activePageColor == currentPageIndicatorTintColor<p/>
 <p>pageColor == pageIndicatorTintColor<p/>
 <p>Set 'pageControlInteraction = true' if you want to change current page by tap on page control. It false by default<p/>
+<p>Set 'pageControlOverImages = true' if you don't want to see white background under page control. It false by default<p/>
 
 #### For change text settings:
 
