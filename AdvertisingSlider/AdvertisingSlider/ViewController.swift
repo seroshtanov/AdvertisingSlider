@@ -14,16 +14,12 @@ class ViewController: UIViewController {
     
     // Text source: https://en.wikipedia.org/wiki/Travel
     
-    fileprivate let titles = ["The origin of the word \"travel\" is most likely lost to history.",
-    "The term \"travel\" may originate from the Old French word travail, which means 'work'",
-    "According to the Merriam Webster dictionary, the first known use of the word travel was in the 14th century.",
-    "It also states that the word comes from Middle English travailen, travelen (which means to torment, labor, strive, journey) and earlier from Old French travailler (which means to work strenuously, toil)",
-    "In English we still occasionally use the words \"travail\", which means struggle.",
-    "There's a big difference between simply being a tourist and being a true world traveler"]
+    fileprivate var titles = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.slider.dataSource = self
+        self.slider.delegate = self
         self.slider.overViewColor = UIColor.black
         self.slider.overViewAlpha = 0.2
         self.slider.cornerRadius = 8
@@ -31,8 +27,26 @@ class ViewController: UIViewController {
         self.slider.font = UIFont.boldSystemFont(ofSize: 16)
         self.slider.textRows = 5
         self.slider.contentMode = .scaleAspectFill
-        self.slider.moveToPage(3, animated: false)
+        
+        //self.slider.moveToPage(3, animated: false)
     }
+    
+    
+    @IBAction func fillSliderPressed(_ sender: Any) {
+        self.titles = ["The origin of the word \"travel\" is most likely lost to history.",
+        "The term \"travel\" may originate from the Old French word travail, which means 'work'",
+        "According to the Merriam Webster dictionary, the first known use of the word travel was in the 14th century.",
+        "It also states that the word comes from Middle English travailen, travelen (which means to torment, labor, strive, journey) and earlier from Old French travailler (which means to work strenuously, toil)",
+        "In English we still occasionally use the words \"travail\", which means struggle.",
+        "There's a big difference between simply being a tourist and being a true world traveler"]
+        self.slider.reloadData()
+    }
+    
+    @IBAction func clearSliderPressed(_ sender: Any) {
+        self.titles = [String]()
+        self.slider.reloadData()
+    }
+    
 }
 
 extension ViewController : AdvertisingSliderDataSource {
@@ -47,4 +61,15 @@ extension ViewController : AdvertisingSliderDataSource {
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String {
         return self.titles[index]
     }
+}
+extension ViewController : AdvertisingSliderDelegate {
+    func didItemPressed(_ index: Int, slider: AdvertisingSlider) {
+        print("Item \(index) pressed")
+    }
+    
+    func didPageChanged(_ index: Int, slider: AdvertisingSlider) {
+        print("Page changed on: \(index)")
+    }
+    
+    
 }

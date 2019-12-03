@@ -14,14 +14,25 @@ public protocol AdvertisingSliderDataSource {
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String
 }
 
+public protocol AdvertisingSliderDelegate {
+    func didItemPressed(_ index: Int, slider: AdvertisingSlider) -> Void
+    func didPageChanged(_ index: Int, slider: AdvertisingSlider) -> Void
+    
+}
+
 
 @IBDesignable public class AdvertisingSlider: UIView {
 
     public var dataSource : AdvertisingSliderDataSource?
+    public var delegate : AdvertisingSliderDelegate?
+    
     fileprivate var activePageNumber = 0 {
         didSet {
-            self.updateButtonsState()
-            self.updateLabel()
+            if oldValue != self.activePageNumber {
+                self.updateButtonsState()
+                self.updateLabel()
+                self.delegate?.didPageChanged(self.activePageNumber, slider: self)
+            }
         }
     }
 
@@ -53,10 +64,6 @@ public protocol AdvertisingSliderDataSource {
     fileprivate var rightButton : UIButton!
     fileprivate var textLabel : UILabel?
     
-    
-
-    
-
     override public func draw(_ rect: CGRect) {
         if rect.size.width < 100 || rect.size.height < 100 {
             return
@@ -72,7 +79,17 @@ public protocol AdvertisingSliderDataSource {
     }
     
     public func reloadData()  {
+        if self.pagesCount() == 0 {
+            self.activePageNumber = 0
+        } else if self.activePageNumber >= self.pagesCount() {
+            self.activePageNumber = self.pagesCount() - 1
+        } else {
+            self.updateButtonsState()
+            self.updateLabel()
+        }
         self.fillScrollView()
+        self.pageCopntrolSetup()
+        self.scrollToCurrentPage()
     }
     
     public func nextPage() -> Bool {
@@ -89,7 +106,7 @@ public protocol AdvertisingSliderDataSource {
     }
     
     public func moveToPage(_ index: Int, animated: Bool) {
-        guard (index >= 0 && index <= (self.pagesCount() - 1)) || index == 0 else {
+        guard (index >= 0 && index <= (self.pagesCount() - 1)) || index == 0  else {
             fatalError("Index out of bounds")
         }
         
@@ -123,11 +140,15 @@ extension AdvertisingSlider {
         }
         self.pageControl.pageIndicatorTintColor  = self.pageColor
         self.pageControl.currentPageIndicatorTintColor = self.activePageColor
-        self.pageControl.numberOfPages = self.pagesCount()
-        self.pageControl.currentPage = self.activePageNumber
+        self.pageCopntrolSetup()
         self.pageControl.isUserInteractionEnabled = self.pageControlInteraction
     }
     
+    fileprivate func pageCopntrolSetup(){
+        self.pageControl.numberOfPages = self.pagesCount()
+        self.pageControl.currentPage = self.activePageNumber
+    }
+
     fileprivate func calculatePageControlFrame(rect: CGRect) -> CGRect {
         let width = rect.size.width
         let height = self.pagerHeight
@@ -229,7 +250,10 @@ extension AdvertisingSlider {
         if self.textLabel == nil {
             self.textLabel = UILabel.init(frame: labelFrame)
             self.textLabel?.textAlignment = .center
-            self.addSubview(textLabel!)
+            self.textLabel?.isUserInteractionEnabled = true
+            let gesture = UITapGestureRecognizer.init(target: self, action: #selector(labelTapped(sender:)))
+            self.textLabel?.addGestureRecognizer(gesture)
+            self.addSubview(self.textLabel!)
         } else {
             self.textLabel?.frame = labelFrame
         }
@@ -257,7 +281,8 @@ extension AdvertisingSlider {
     }
     
     fileprivate func updateButtonsState() {
-        let isFirstPage  = (self.activePageNumber == 0)
+        
+        let isFirstPage  = (self.activePageNumber == 0) || self.pagesCount() == 0
         let isLastPage = (self.activePageNumber >= (self.pagesCount() - 1))
         self.leftButton?.alpha =  isFirstPage ? 0.5 : 1
         self.leftButton?.isEnabled = !isFirstPage
@@ -290,11 +315,17 @@ extension AdvertisingSlider  {
 }
 
 
+extension AdvertisingSlider {
+    @objc fileprivate func labelTapped(sender: UITapGestureRecognizer) {
+        self.delegate?.didItemPressed(self.activePageNumber, slider: self)
+    }
+}
+
 extension AdvertisingSlider : UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let previousCurrentPage = activePageNumber
         let visibleBounds = scrollView.bounds
-        activePageNumber = min(max(Int(floor(visibleBounds.midX / visibleBounds.width)), 0), self.pagesCount() - 1)
+        activePageNumber = max(min(max(Int(floor(visibleBounds.midX / visibleBounds.width)), 0), self.pagesCount() - 1), 0)
         if activePageNumber != previousCurrentPage {
             self.pageControl.currentPage = activePageNumber
         }

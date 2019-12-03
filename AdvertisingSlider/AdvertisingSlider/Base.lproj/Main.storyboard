@@ -26,12 +26,40 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="pageControlOverImages" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwy-Xo-X2E">
+                                <rect key="frame" x="15" y="350" width="384" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="t8O-wy-Jig"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Fill slider"/>
+                                <connections>
+                                    <action selector="fillSliderPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="X9e-ax-XzD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Uu-Mf-D28">
+                                <rect key="frame" x="15" y="393" width="384" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="dVB-RS-BJO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Clear slider"/>
+                                <connections>
+                                    <action selector="clearSliderPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gYb-fm-jVM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="bo3-wA-Alk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="2Zb-8V-UO1"/>
+                            <constraint firstItem="uwy-Xo-X2E" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="K0Y-bl-zbg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bo3-wA-Alk" secondAttribute="trailing" constant="20" id="O7M-3x-lgY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uwy-Xo-X2E" secondAttribute="trailing" constant="15" id="Pw1-2U-YNu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6Uu-Mf-D28" secondAttribute="trailing" constant="15" id="SKe-mu-o1q"/>
+                            <constraint firstItem="6Uu-Mf-D28" firstAttribute="top" secondItem="uwy-Xo-X2E" secondAttribute="bottom" constant="8" id="bfq-DZ-Hhk"/>
+                            <constraint firstItem="uwy-Xo-X2E" firstAttribute="top" secondItem="bo3-wA-Alk" secondAttribute="bottom" constant="15" id="iAR-Zj-Gji"/>
                             <constraint firstItem="bo3-wA-Alk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="n6Q-JY-6FI"/>
+                            <constraint firstItem="6Uu-Mf-D28" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="15" id="tBS-W9-YgA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
