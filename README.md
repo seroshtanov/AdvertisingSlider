@@ -1,14 +1,17 @@
 # AdvertisingSlider
-AdvertisingSlider
-
-
 It's simple way to show some images with text in yours iOS appication
+
+## What's new in 0.9.8:
+
+- Some litte fixes 
+- AdvertisingSliderDelegate (See below description)
+- Added possibility to use URL's instead UIImages
 
 ## Swift 5.0;  >=iOS10.3 
 
 ### Installation:
 
-**pod 'AdvertisingSlider', '0.9.7'**
+**pod 'AdvertisingSlider', '0.9.8'
 
 ## How to use:
 
@@ -16,11 +19,19 @@ Just put UIView in your xib or storyboard and change class name on "AdvertisingS
 
 ### Follow AdvertisingSliderDataSource to fill view:
 
-#### It has 3 methods: 
+#### It has 4 methods: 
  <p>func pagesCount(forSlider: AdvertisingSlider) -> Int<p/>
- <p>func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage<p/>
+ <p>func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage?<p/>
  <p>func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String<p/>
-  
+ <p>func urlStringToDownload(image index: Int, slider: AdvertisingSlider) -> String?</p>
+ 
+ Warning: if you return UIImage and URL for same index, UIImage uses
+ 
+### Follow AdvertisingSliderDelegate:
+
+<p>func didItemPressed(_ index: Int, slider: AdvertisingSlider) -> Void</p>
+<p>func didPageChanged(_ index: Int, slider: AdvertisingSlider) -> Void</p>
+ 
 #### For reloading view and changing pages:
 
 For reload view use func reloadData() 
