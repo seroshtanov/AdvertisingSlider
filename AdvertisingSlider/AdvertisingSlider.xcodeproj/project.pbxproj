@@ -20,6 +20,7 @@
 		2AA6E99C23671E9D00D65883 /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6E99623671E9D00D65883 /* 0.jpg */; };
 		2AA6E99D23671E9D00D65883 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6E99723671E9D00D65883 /* 3.jpg */; };
 		2AA6E99E23671E9D00D65883 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2AA6E99823671E9D00D65883 /* 1.jpg */; };
+		2AE2CAE22396D44400C74E15 /* UIImageView+WebCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE2CAE12396D44400C74E15 /* UIImageView+WebCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		2AA6E99623671E9D00D65883 /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
 		2AA6E99723671E9D00D65883 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		2AA6E99823671E9D00D65883 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		2AE2CAE12396D44400C74E15 /* UIImageView+WebCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+WebCache.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			children = (
 				2AA6E97623671B1700D65883 /* AdvSliderAssets.xcassets */,
 				2AA6E97723671B1700D65883 /* AdvertisingSlider.swift */,
+				2AE2CAE12396D44400C74E15 /* UIImageView+WebCache.swift */,
 			);
 			path = AdvertisingSlider;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			files = (
 				2AA6E96623671AF300D65883 /* ViewController.swift in Sources */,
 				2AA6E97923671B1700D65883 /* AdvertisingSlider.swift in Sources */,
+				2AE2CAE22396D44400C74E15 /* UIImageView+WebCache.swift in Sources */,
 				2AA6E96223671AF300D65883 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

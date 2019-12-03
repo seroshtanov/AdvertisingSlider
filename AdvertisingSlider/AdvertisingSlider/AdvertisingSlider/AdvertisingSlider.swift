@@ -11,6 +11,7 @@ import UIKit
 public protocol AdvertisingSliderDataSource {
     func pagesCount(forSlider: AdvertisingSlider) -> Int
     func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage?
+    func urlStringToDownload(image index: Int, slider: AdvertisingSlider) -> String?
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String
 }
 
@@ -136,7 +137,12 @@ public protocol AdvertisingSliderDelegate {
         var last = item + 1
         while last >= 0, last >= first  {
             if let iv = self.viewWithTag(last + 1) as? UIImageView {
-                iv.image = self.dataSource?.imageForIndex(last, slider: self)
+                if let image = self.dataSource?.imageForIndex(last, slider: self){
+                    iv.image = image
+                } else if let urlString = self.dataSource?.urlStringToDownload(image: last, slider: self){
+                    iv.downloadImage(urlString: urlString)
+                }
+
             }
             last -= 1
         }
