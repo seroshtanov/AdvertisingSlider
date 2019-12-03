@@ -10,7 +10,7 @@ import UIKit
 
 public protocol AdvertisingSliderDataSource {
     func pagesCount(forSlider: AdvertisingSlider) -> Int
-    func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage
+    func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage?
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String
 }
 
@@ -31,6 +31,7 @@ public protocol AdvertisingSliderDelegate {
             if oldValue != self.activePageNumber {
                 self.updateButtonsState()
                 self.updateLabel()
+                self.fillImages(item: self.activePageNumber)
                 self.delegate?.didPageChanged(self.activePageNumber, slider: self)
             }
         }
@@ -79,8 +80,11 @@ public protocol AdvertisingSliderDelegate {
     }
     
     public func reloadData()  {
-        if self.pagesCount() == 0 {
+        if self.pagesCount() == 0, self.activePageNumber != 0 {
             self.activePageNumber = 0
+        } else if self.pagesCount() == 0, self.activePageNumber == 0{
+            self.updateButtonsState()
+            self.updateLabel()
         } else if self.activePageNumber >= self.pagesCount() {
             self.activePageNumber = self.pagesCount() - 1
         } else {
@@ -88,8 +92,11 @@ public protocol AdvertisingSliderDelegate {
             self.updateLabel()
         }
         self.fillScrollView()
+        self.fillImages(item: self.activePageNumber)
         self.pageCopntrolSetup()
         self.scrollToCurrentPage()
+        
+
     }
     
     public func nextPage() -> Bool {
@@ -124,6 +131,17 @@ public protocol AdvertisingSliderDelegate {
         return result
     }
     
+    fileprivate func fillImages(item: Int) {
+        let first = item - 1
+        var last = item + 1
+        while last >= 0, last >= first  {
+            if let iv = self.viewWithTag(last + 1) as? UIImageView {
+                iv.image = self.dataSource?.imageForIndex(last, slider: self)
+            }
+            last -= 1
+        }
+    }
+    
 }
 
 // MARK : PageControl
@@ -138,6 +156,7 @@ extension AdvertisingSlider {
             self.pageControl.addTarget(self, action:#selector(updatePage(sender:)), for: .touchUpInside)
             self.addSubview(pageControl)
         }
+
         self.pageControl.pageIndicatorTintColor  = self.pageColor
         self.pageControl.currentPageIndicatorTintColor = self.activePageColor
         self.pageCopntrolSetup()
@@ -189,8 +208,9 @@ extension AdvertisingSlider {
         for index in 0 ..<  self.pagesCount() {
             let ivFrame = CGRect.init(x: CGFloat(index) * self.scrollView.frame.size.width, y: 0, width: self.scrollView.frame.size.width, height: self.scrollView.frame.size.height)
             let imageView = UIImageView.init(frame: ivFrame)
-            imageView.image = self.imageForIndex(index)
+           // imageView.image = self.imageForIndex(index)
             imageView.contentMode = self.contentMode
+            imageView.tag = index + 1
             scrollView.addSubview(imageView)
 
         }
@@ -343,7 +363,7 @@ extension AdvertisingSlider {
             return 0
         }
     }
-    fileprivate func imageForIndex(_ index: Int) -> UIImage {
+    fileprivate func imageForIndex(_ index: Int) -> UIImage? {
         return self.dataSource!.imageForIndex(index, slider: self)
     }
     fileprivate func textForIndex(_ index: Int) -> String {

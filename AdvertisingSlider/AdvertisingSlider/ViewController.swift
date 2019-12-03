@@ -54,7 +54,8 @@ extension ViewController : AdvertisingSliderDataSource {
         return self.titles.count
     }
     
-    func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage {
+    func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage? {
+        print("Get image number \(index)")
         return UIImage.init(named: "\(index).jpg")!
     }
     
