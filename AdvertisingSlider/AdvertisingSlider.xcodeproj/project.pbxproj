@@ -374,7 +374,7 @@
 				2AA6E97123671AF600D65883 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		2AA6E97223671AF600D65883 /* Build configuration list for PBXNativeTarget "AdvertisingSlider" */ = {
 			isa = XCConfigurationList;
@@ -383,7 +383,7 @@
 				2AA6E97423671AF600D65883 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

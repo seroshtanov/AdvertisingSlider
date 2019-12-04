@@ -30,6 +30,9 @@ public protocol AdvertisingSliderDelegate {
     fileprivate var activePageNumber = 0 {
         didSet {
             if oldValue != self.activePageNumber {
+                #if DEBUG
+                    print("activePageNumber changed (\(self.activePageNumber))")
+                #endif
                 self.updateButtonsState()
                 self.updateLabel()
                 self.fillImages(item: self.activePageNumber)
@@ -37,7 +40,7 @@ public protocol AdvertisingSliderDelegate {
             }
         }
     }
-
+    @IBInspectable fileprivate var pagesCount = 0
     
     @IBInspectable public var overViewColor : UIColor! = UIColor.clear
     @IBInspectable public var overViewAlpha : CGFloat = 1
@@ -59,49 +62,61 @@ public protocol AdvertisingSliderDelegate {
     @IBInspectable public var leftButtonImage : UIImage?
     @IBInspectable public var rightButtonImage : UIImage?
     
-    fileprivate var topView : UIView!
-    fileprivate var scrollView : UIScrollView!
-    fileprivate var pageControl : UIPageControl!
-    fileprivate var leftButton : UIButton!
-    fileprivate var rightButton : UIButton!
+    fileprivate var topView : UIView?
+    fileprivate var scrollView : UIScrollView?
+    fileprivate var pageControl : UIPageControl?
+    fileprivate var leftButton : UIButton?
+    fileprivate var rightButton : UIButton?
     fileprivate var textLabel : UILabel?
     
     override public func draw(_ rect: CGRect) {
+        #if DEBUG
+            print("draw rect: \(rect)")
+        #endif
+        
         if rect.size.width < 100 || rect.size.height < 100 {
             return
         }
-        
-        
         self.drawScrollViewIfNeeded(rect: rect)
         self.drawTopViewIfNeeded(rect: rect)
         self.drawPageControlIfNeeeded(rect: rect)
         
         self.updateButtonsState()
         self.updateLabel()
+        self.reloadData()
     }
     
     public func reloadData()  {
-        if self.pagesCount() == 0, self.activePageNumber != 0 {
+        #if DEBUG
+            print("reloadData")
+        #endif
+        let newPagesValue = self.getPagesCount()
+        if self.pagesCount != newPagesValue{
+            self.pagesCount = newPagesValue
+            self.fillScrollView()
+        }
+        
+        if self.pagesCount == 0, self.activePageNumber != 0 {
             self.activePageNumber = 0
-        } else if self.pagesCount() == 0, self.activePageNumber == 0{
+        } else if self.pagesCount == 0, self.activePageNumber == 0{
             self.updateButtonsState()
             self.updateLabel()
-        } else if self.activePageNumber >= self.pagesCount() {
-            self.activePageNumber = self.pagesCount() - 1
+        } else if self.activePageNumber >= self.pagesCount {
+            self.activePageNumber = self.pagesCount - 1
         } else {
             self.updateButtonsState()
             self.updateLabel()
         }
-        self.fillScrollView()
-        self.fillImages(item: self.activePageNumber)
+        
         self.pageCopntrolSetup()
         self.scrollToCurrentPage()
-        
-
+        self.fillImages(item: self.activePageNumber)
     }
     
+    
+    
     public func nextPage() -> Bool {
-        if self.activePageNumber >= (self.pagesCount() - 1) {return false}
+        if self.activePageNumber >= (self.pagesCount - 1) {return false}
         self.pageControl?.currentPage += 1
         self.scrollToCurrentPage()
         return true
@@ -114,7 +129,7 @@ public protocol AdvertisingSliderDelegate {
     }
     
     public func moveToPage(_ index: Int, animated: Bool) {
-        guard (index >= 0 && index <= (self.pagesCount() - 1)) || index == 0  else {
+        guard (index >= 0 && index <= (self.pagesCount - 1)) || index == 0  else {
             fatalError("Index out of bounds")
         }
         
@@ -155,23 +170,23 @@ extension AdvertisingSlider {
     fileprivate func drawPageControlIfNeeeded(rect: CGRect) {
         let frame = self.calculatePageControlFrame(rect: rect)
         if self.pageControl != nil {
-            self.pageControl.frame = frame
+            self.pageControl!.frame = frame
         } else
         {
             self.pageControl = UIPageControl.init(frame: frame)
-            self.pageControl.addTarget(self, action:#selector(updatePage(sender:)), for: .touchUpInside)
-            self.addSubview(pageControl)
+            self.pageControl!.addTarget(self, action:#selector(updatePage(sender:)), for: .touchUpInside)
+            self.addSubview(pageControl!)
         }
 
-        self.pageControl.pageIndicatorTintColor  = self.pageColor
-        self.pageControl.currentPageIndicatorTintColor = self.activePageColor
+        self.pageControl!.pageIndicatorTintColor  = self.pageColor
+        self.pageControl!.currentPageIndicatorTintColor = self.activePageColor
         self.pageCopntrolSetup()
-        self.pageControl.isUserInteractionEnabled = self.pageControlInteraction
+        self.pageControl!.isUserInteractionEnabled = self.pageControlInteraction
     }
     
     fileprivate func pageCopntrolSetup(){
-        self.pageControl.numberOfPages = self.pagesCount()
-        self.pageControl.currentPage = self.activePageNumber
+        self.pageControl?.numberOfPages = self.pagesCount
+        self.pageControl?.currentPage = self.activePageNumber
     }
 
     fileprivate func calculatePageControlFrame(rect: CGRect) -> CGRect {
@@ -187,6 +202,9 @@ extension AdvertisingSlider {
     }
 }
 
+
+
+
 //MARK: ScrollView
 
 extension AdvertisingSlider {
@@ -194,33 +212,32 @@ extension AdvertisingSlider {
         let frame = self.calculateTopViewFrame(rect: rect)
         if self.scrollView == nil {
             self.scrollView = UIScrollView.init(frame: frame)
-            self.scrollView.clipsToBounds = true
-            self.scrollView.isPagingEnabled = true
-            self.scrollView.delegate = self
-            self.addSubview(scrollView)
+            self.scrollView!.clipsToBounds = true
+            self.scrollView!.isPagingEnabled = true
+            self.scrollView!.delegate = self
+            self.addSubview(scrollView!)
         } else {
-            self.scrollView.frame = frame
+            self.scrollView!.frame = frame
         }
-        self.scrollView.layer.cornerRadius = self.cornerRadius
-        self.scrollView.backgroundColor = self.imageViewColor
-        self.scrollView.isUserInteractionEnabled = self.scrollingManually
+        self.scrollView!.layer.cornerRadius = self.cornerRadius
+        self.scrollView!.backgroundColor = self.imageViewColor
+        self.scrollView!.isUserInteractionEnabled = self.scrollingManually
         self.fillScrollView()
     }
     
     fileprivate func fillScrollView() {
         guard self.scrollView != nil  else {return}
 
-        self.scrollView.subviews.forEach { $0.removeFromSuperview()}
-        for index in 0 ..<  self.pagesCount() {
-            let ivFrame = CGRect.init(x: CGFloat(index) * self.scrollView.frame.size.width, y: 0, width: self.scrollView.frame.size.width, height: self.scrollView.frame.size.height)
+        self.scrollView?.subviews.forEach { $0.removeFromSuperview()}
+        for index in 0 ..<  self.pagesCount {
+            let ivFrame = CGRect.init(x: CGFloat(index) * self.scrollView!.frame.size.width, y: 0, width: self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height)
             let imageView = UIImageView.init(frame: ivFrame)
-           // imageView.image = self.imageForIndex(index)
             imageView.contentMode = self.contentMode
             imageView.tag = index + 1
-            scrollView.addSubview(imageView)
+            scrollView?.addSubview(imageView)
 
         }
-        scrollView.contentSize = CGSize.init(width: CGFloat(self.pagesCount()) * self.scrollView.frame.size.width, height: self.scrollView.frame.size.height)
+        scrollView?.contentSize = CGSize.init(width: CGFloat(self.pagesCount) * self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height)
         self.scrollToCurrentPage()
     }
     
@@ -251,26 +268,25 @@ extension AdvertisingSlider {
         
         if self.topView == nil {
             self.topView = UIView.init(frame: frame)
-            self.addSubview(topView)
-
+            self.addSubview(topView!)
         } else {
-            self.topView.frame = frame
+            self.topView!.frame = frame
         }
         
         if self.leftButton == nil {
             self.leftButton = UIButton.init(frame: leftButtonFrame)
-            self.leftButton.addTarget(self, action:#selector(leftButtonPressed(sender:)), for: .touchUpInside)
-            self.addSubview(self.leftButton)
+            self.leftButton!.addTarget(self, action:#selector(leftButtonPressed(sender:)), for: .touchUpInside)
+            self.addSubview(self.leftButton!)
         } else {
-            self.leftButton.frame = leftButtonFrame
+            self.leftButton!.frame = leftButtonFrame
         }
         
         if self.rightButton == nil {
             self.rightButton = UIButton.init(frame: rightButtonFrame)
-            self.rightButton.addTarget(self, action: #selector(rightButtonPressed(sender:)), for: .touchUpInside)
-            self.addSubview(self.rightButton)
+            self.rightButton!.addTarget(self, action: #selector(rightButtonPressed(sender:)), for: .touchUpInside)
+            self.addSubview(self.rightButton!)
         } else {
-            self.rightButton.frame = rightButtonFrame
+            self.rightButton!.frame = rightButtonFrame
         }
         
         if self.textLabel == nil {
@@ -289,27 +305,27 @@ extension AdvertisingSlider {
         self.textLabel?.numberOfLines = self.textRows
         
         
-        self.topView.backgroundColor = self.overViewColor
-        self.topView.alpha = self.overViewAlpha
-        self.topView.layer.cornerRadius = self.cornerRadius
+        self.topView?.backgroundColor = self.overViewColor
+        self.topView?.alpha = self.overViewAlpha
+        self.topView?.layer.cornerRadius = self.cornerRadius
         
         if self.leftButtonImage == nil {
-            self.leftButton.setImage(self.getImage(name: "advSliderLeft"), for: .normal)
+            self.leftButton?.setImage(self.getImage(name: "advSliderLeft"), for: .normal)
         } else {
-            self.leftButton.setImage(self.leftButtonImage, for: .normal)
+            self.leftButton?.setImage(self.leftButtonImage, for: .normal)
         }
         
         if self.rightButtonImage == nil {
-            self.rightButton.setImage(self.getImage(name: "advSliderRight"), for: .normal)
+            self.rightButton?.setImage(self.getImage(name: "advSliderRight"), for: .normal)
         } else {
-            self.rightButton.setImage(self.rightButtonImage, for: .normal)
+            self.rightButton?.setImage(self.rightButtonImage, for: .normal)
         }
     }
     
     fileprivate func updateButtonsState() {
         
-        let isFirstPage  = (self.activePageNumber == 0) || self.pagesCount() == 0
-        let isLastPage = (self.activePageNumber >= (self.pagesCount() - 1))
+        let isFirstPage  = (self.activePageNumber == 0) || self.pagesCount == 0
+        let isLastPage = (self.activePageNumber >= (self.pagesCount - 1))
         self.leftButton?.alpha =  isFirstPage ? 0.5 : 1
         self.leftButton?.isEnabled = !isFirstPage
         self.rightButton?.alpha =  isLastPage ? 0.5 : 1
@@ -317,12 +333,11 @@ extension AdvertisingSlider {
     }
     
     fileprivate func updateLabel() {
-        if self.pagesCount() > 0 {
+        if self.pagesCount > 0 {
            self.textLabel?.text = self.textForIndex(self.activePageNumber)
         } else {
             self.textLabel?.text = self.defaultText
         }
-        
     }
     
 }
@@ -336,7 +351,7 @@ extension AdvertisingSlider  {
     }
     
     fileprivate func scrollToCurrentPage(animated: Bool = true) {
-        self.scrollView?.scrollRectToVisible(CGRect.init(x: self.scrollView.frame.size.width * CGFloat(pageControl?.currentPage ?? 0), y: 0, width: self.scrollView.frame.size.width, height: self.scrollView.frame.size.height), animated: animated)
+        self.scrollView?.scrollRectToVisible(CGRect.init(x: self.scrollView!.frame.size.width * CGFloat(pageControl?.currentPage ?? 0), y: 0, width: self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height), animated: animated)
     }
 }
 
@@ -351,9 +366,9 @@ extension AdvertisingSlider : UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let previousCurrentPage = activePageNumber
         let visibleBounds = scrollView.bounds
-        activePageNumber = max(min(max(Int(floor(visibleBounds.midX / visibleBounds.width)), 0), self.pagesCount() - 1), 0)
+        activePageNumber = max(min(max(Int(floor(visibleBounds.midX / visibleBounds.width)), 0), self.pagesCount - 1), 0)
         if activePageNumber != previousCurrentPage {
-            self.pageControl.currentPage = activePageNumber
+            self.pageControl?.currentPage = activePageNumber
         }
     }
 }
@@ -362,7 +377,7 @@ extension AdvertisingSlider : UIScrollViewDelegate {
 //MARK: Data
 
 extension AdvertisingSlider {
-    fileprivate func pagesCount() -> Int {
+    fileprivate func getPagesCount() -> Int {
         if self.dataSource != nil {
             return self.dataSource!.pagesCount(forSlider: self)
         } else {

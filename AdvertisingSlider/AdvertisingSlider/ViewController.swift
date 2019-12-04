@@ -46,6 +46,12 @@ class ViewController: UIViewController {
         self.titles = [String]()
         self.slider.reloadData()
     }
+    @IBAction func reloadDataPressed(_ sender: Any) {
+        if titles.count == 0 {return}
+        let itemNumber = titles.count / 2
+        self.titles.remove(at: itemNumber)
+        self.slider.reloadData()
+    }
     
 }
 
