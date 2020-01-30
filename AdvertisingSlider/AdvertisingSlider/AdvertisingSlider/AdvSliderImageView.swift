@@ -1,18 +1,16 @@
 //
-//  UIImageView+WebCache.swift
+//  AdvSliderImageView.swift
 //  AdvertisingSlider
 //
-//  Created by Виталий Сероштанов on 03.12.2019.
-//  Copyright © 2019 Виталий Сероштанов. All rights reserved.
+//  Created by Виталий Сероштанов on 30.01.2020.
+//  Copyright © 2020 Виталий Сероштанов. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-let imageCache = NSCache<AnyObject, AnyObject>()
-fileprivate var downloading = false
-
-extension UIImageView {
+class AdvSliderImageView: UIImageView {
+    let imageCache = NSCache<AnyObject, AnyObject>()
+    fileprivate var downloading = false
 
     func downloadImage(urlString: String) {
         self.image = nil
@@ -26,16 +24,16 @@ extension UIImageView {
         }
         downloading = true
         let url = URL(string: urlString)
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            downloading = false
+        URLSession.shared.dataTask(with: url!, completionHandler: {[weak self] (data, response, error) in
+            self?.downloading = false
             if error != nil {
                 print(error!)
                 return
             }
             DispatchQueue.main.async  {
                 if let downloadedImage = UIImage(data: data!) {
-                    imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
-                    self.image = downloadedImage
+                    self?.imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
+                    self?.image = downloadedImage
                 }
             }
             

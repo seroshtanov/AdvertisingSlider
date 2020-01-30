@@ -151,7 +151,7 @@ public protocol AdvertisingSliderDelegate {
         let first = item - 1
         var last = item + 1
         while last >= 0, last >= first  {
-            if let iv = self.viewWithTag(last + 1) as? UIImageView {
+            if let iv = self.viewWithTag(last + 1) as? AdvSliderImageView {
                 if let image = self.dataSource?.imageForIndex(last, slider: self){
                     iv.image = image
                 } else if let urlString = self.dataSource?.urlStringToDownload(image: last, slider: self){
@@ -231,11 +231,11 @@ extension AdvertisingSlider {
         self.scrollView?.subviews.forEach { $0.removeFromSuperview()}
         for index in 0 ..<  self.pagesCount {
             let ivFrame = CGRect.init(x: CGFloat(index) * self.scrollView!.frame.size.width, y: 0, width: self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height)
-            let imageView = UIImageView.init(frame: ivFrame)
+            let imageView = AdvSliderImageView.init(frame: ivFrame)
             imageView.contentMode = self.contentMode
             imageView.tag = index + 1
+            imageView.clipsToBounds = true
             scrollView?.addSubview(imageView)
-
         }
         scrollView?.contentSize = CGSize.init(width: CGFloat(self.pagesCount) * self.scrollView!.frame.size.width, height: self.scrollView!.frame.size.height)
         self.scrollToCurrentPage()

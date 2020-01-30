@@ -57,10 +57,11 @@ class ViewController: UIViewController {
 
 extension ViewController : AdvertisingSliderDataSource {
     func urlStringToDownload(image index: Int, slider: AdvertisingSlider) -> String? {
-        if index == 3 {
-            return "https://images.pexels.com/photos/1543793/pexels-photo-1543793.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-        }
-        return nil
+        return "https://images.pexels.com/photos/1543793/pexels-photo-1543793.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+//        if index == 3 {
+//            return "https://images.pexels.com/photos/1543793/pexels-photo-1543793.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+//        }
+//        return nil
     }
     
     func pagesCount(forSlider: AdvertisingSlider) -> Int {
@@ -68,9 +69,10 @@ extension ViewController : AdvertisingSliderDataSource {
     }
     
     func imageForIndex(_ index: Int, slider: AdvertisingSlider) -> UIImage? {
-        if index == 3 {return nil}
-        print("Get image number \(index)")
-        return UIImage.init(named: "\(index).jpg")!
+        return nil
+//        if index == 3 {return nil}
+//        print("Get image number \(index)")
+//        return UIImage.init(named: "\(index).jpg")!
     }
     
     func textForIndex(_ index: Int, slider: AdvertisingSlider) -> String {
