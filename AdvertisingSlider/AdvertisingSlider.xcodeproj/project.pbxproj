@@ -25,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		2A73D53E23E3089E00AEE331 /* AdvSliderImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvSliderImageView.swift; sourceTree = "<group>"; };
+		2A73D54023E30D5E00AEE331 /* AdvertisingSlider.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = AdvertisingSlider.podspec; sourceTree = SOURCE_ROOT; };
 		2AA6E95E23671AF300D65883 /* AdvertisingSlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdvertisingSlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA6E96123671AF300D65883 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA6E96523671AF300D65883 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		2AA6E96023671AF300D65883 /* AdvertisingSlider */ = {
 			isa = PBXGroup;
 			children = (
+				2A73D54023E30D5E00AEE331 /* AdvertisingSlider.podspec */,
 				2AA6E99223671D2A00D65883 /* Images */,
 				2AA6E97523671B1700D65883 /* AdvertisingSlider */,
 				2AA6E96123671AF300D65883 /* AppDelegate.swift */,
