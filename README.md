@@ -1,6 +1,10 @@
 # AdvertisingSlider
 It's simple way to show some images with text in yours iOS appication
 
+## What's new in 0.9.9:
+
+- Fixed some bugs
+
 ## What's new in 0.9.8:
 
 - Some litte fixes 
@@ -11,7 +15,7 @@ It's simple way to show some images with text in yours iOS appication
 
 ### Installation:
 
-**pod 'AdvertisingSlider', '0.9.8'
+**pod 'AdvertisingSlider', '0.9.9'
 
 ## How to use:
 
